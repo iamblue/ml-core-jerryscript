@@ -1,0 +1,14 @@
+{
+  "name": "ml-core-jerryscript-cm4",
+  "version": "0.0.1",
+  "description": "The jerryscript core engine wrapper for cortex m4",
+  "main": "index.js",
+  "src": {
+    "cm4": "./cm4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
