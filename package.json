@@ -1,7 +1,7 @@
 {
   "name": "ml-core-jerryscript-cm4",
   "version": "0.0.1",
-  "description": "The jerryscript core engine wrapper for cortex m4",
+  "description": "This is the jerryscript engine wrapper for Microlattice.js",
   "main": "index.js",
   "src": {
     "cm4": "./cm4"
