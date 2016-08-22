@@ -1,4 +1,4 @@
-/* Copyright 2014-2015 Samsung Electronics Co., Ltd.
+/* Copyright 2014-2016 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,17 @@
  * limitations under the License.
  */
 
+#ifndef ECMA_ALLOC_H
+#define ECMA_ALLOC_H
+
+#include "ecma-globals.h"
+
 /** \addtogroup ecma ECMA
  * @{
  *
  * \addtogroup ecmaalloc Routines for allocation/freeing memory for ECMA data types
  * @{
  */
-
-#ifndef JERRY_ECMA_ALLOC_H
-#define  JERRY_ECMA_ALLOC_H
-
-#include "ecma-globals.h"
 
 /**
  * Allocate memory for ecma-object
@@ -36,18 +36,6 @@ extern ecma_object_t *ecma_alloc_object (void);
  * Dealloc memory from an ecma-object
  */
 extern void ecma_dealloc_object (ecma_object_t *);
-
-/**
- * Allocate memory for ecma-property
- *
- * @return pointer to allocated memory
- */
-extern ecma_property_t *ecma_alloc_property (void);
-
-/**
- * Dealloc memory from an ecma-property
- */
-extern void ecma_dealloc_property (ecma_property_t *);
 
 /**
  * Allocate memory for ecma-number
@@ -98,18 +86,6 @@ extern ecma_string_t *ecma_alloc_string (void);
 extern void ecma_dealloc_string (ecma_string_t *);
 
 /**
- * Allocate memory for label descriptor
- *
- * @return pointer to allocated memory
- */
-extern ecma_label_descriptor_t *ecma_alloc_label_descriptor (void);
-
-/**
- * Dealloc memory from label descriptor
- */
-extern void ecma_dealloc_label_descriptor (ecma_label_descriptor_t *);
-
-/**
  * Allocate memory for getter-setter pointer pair
  *
  * @return pointer to allocated memory
@@ -133,10 +109,33 @@ extern ecma_external_pointer_t *ecma_alloc_external_pointer (void);
 */
 extern void ecma_dealloc_external_pointer (ecma_external_pointer_t *);
 
+/*
+ * Allocate memory for extended object
+ *
+ * @return pointer to allocated memory
+ */
+extern ecma_extended_object_t *ecma_alloc_extended_object (void);
 
-#endif /* JERRY_ECMA_ALLOC_H */
+/**
+ * Dealloc memory of an extended object
+ */
+extern void ecma_dealloc_extended_object (ecma_extended_object_t *);
+
+/**
+ * Allocate memory for ecma-property pair
+ *
+ * @return pointer to allocated memory
+ */
+extern ecma_property_pair_t *ecma_alloc_property_pair (void);
+
+/**
+ * Dealloc memory from an ecma-property pair
+ */
+extern void ecma_dealloc_property_pair (ecma_property_pair_t *);
 
 /**
  * @}
  * @}
  */
+
+#endif /* !ECMA_ALLOC_H */

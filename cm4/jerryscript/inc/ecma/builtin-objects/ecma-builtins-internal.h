@@ -1,4 +1,4 @@
-/* Copyright 2014-2015 Samsung Electronics Co., Ltd.
+/* Copyright 2014-2016 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,45 +24,48 @@
 #include "ecma-globals.h"
 
 /**
- * Position of built-in object's id field in [[Built-in routine's description]] internal property
+ * Type of built-in properties.
  */
-#define ECMA_BUILTIN_ROUTINE_ID_BUILT_IN_OBJECT_ID_POS   (0)
+typedef enum
+{
+  ECMA_BUILTIN_PROPERTY_SIMPLE, /**< simple value property */
+  ECMA_BUILTIN_PROPERTY_NUMBER, /**< number value property */
+  ECMA_BUILTIN_PROPERTY_STRING, /**< string value property */
+  ECMA_BUILTIN_PROPERTY_OBJECT, /**< builtin object property */
+  ECMA_BUILTIN_PROPERTY_ROUTINE, /**< routine property */
+  ECMA_BUILTIN_PROPERTY_END, /**< last property */
+} ecma_builtin_property_type_t;
 
 /**
- * Width of built-in object's id field in [[Built-in routine's description]] internal property
+ * Type of symbolic built-in number types (starting from 256).
  */
-#define ECMA_BUILTIN_ROUTINE_ID_BUILT_IN_OBJECT_ID_WIDTH (8)
+typedef enum
+{
+  ECMA_BUILTIN_NUMBER_MAX = 256, /**< value of ECMA_NUMBER_MAX_VALUE */
+  ECMA_BUILTIN_NUMBER_MIN, /**< value of ECMA_NUMBER_MIN_VALUE */
+  ECMA_BUILTIN_NUMBER_E, /**< value of ECMA_NUMBER_E */
+  ECMA_BUILTIN_NUMBER_PI, /**< value of ECMA_NUMBER_PI */
+  ECMA_BUILTIN_NUMBER_LN10, /**< value of ECMA_NUMBER_LN10 */
+  ECMA_BUILTIN_NUMBER_LN2, /**< value of ECMA_NUMBER_LN2 */
+  ECMA_BUILTIN_NUMBER_LOG2E, /**< value of ECMA_NUMBER_LOG2E */
+  ECMA_BUILTIN_NUMBER_LOG10E, /**< value of ECMA_NUMBER_LOG10E */
+  ECMA_BUILTIN_NUMBER_SQRT2, /**< value of ECMA_NUMBER_SQRT2 */
+  ECMA_BUILTIN_NUMBER_SQRT_1_2, /**< value of ECMA_NUMBER_SQRT_1_2 */
+  ECMA_BUILTIN_NUMBER_NAN, /**< result of ecma_number_make_nan () */
+  ECMA_BUILTIN_NUMBER_POSITIVE_INFINITY, /**< result of ecma_number_make_infinity (false) */
+  ECMA_BUILTIN_NUMBER_NEGATIVE_INFINITY, /**< result of ecma_number_make_infinity (true) */
+} ecma_builtin_number_type_t;
 
 /**
- * Position of built-in routine's id field in [[Built-in routine's description]] internal property
+ * Description of built-in properties.
  */
-#define ECMA_BUILTIN_ROUTINE_ID_BUILT_IN_ROUTINE_ID_POS \
-  (ECMA_BUILTIN_ROUTINE_ID_BUILT_IN_OBJECT_ID_POS + \
-   ECMA_BUILTIN_ROUTINE_ID_BUILT_IN_OBJECT_ID_WIDTH)
-
-/**
- * Width of built-in routine's id field in [[Built-in routine's description]] internal property
- */
-#define ECMA_BUILTIN_ROUTINE_ID_BUILT_IN_ROUTINE_ID_WIDTH (16)
-
-/**
- * Position of built-in routine's length field in [[Built-in routine's description]] internal property
- */
-#define ECMA_BUILTIN_ROUTINE_ID_LENGTH_VALUE_POS \
-  (ECMA_BUILTIN_ROUTINE_ID_BUILT_IN_ROUTINE_ID_POS + \
-   ECMA_BUILTIN_ROUTINE_ID_BUILT_IN_ROUTINE_ID_WIDTH)
-
-/**
- * Width of built-in routine's id field in [[Built-in routine's description]] internal property
- */
-#define ECMA_BUILTIN_ROUTINE_ID_LENGTH_VALUE_WIDTH (8)
-
-/* ecma-builtins.c */
-extern ecma_object_t *
-ecma_builtin_make_function_object_for_routine (ecma_builtin_id_t, uint16_t, uint8_t);
-extern int32_t
-ecma_builtin_bin_search_for_magic_string_id_in_array (const lit_magic_string_id_t[],
-                                                      ecma_length_t, lit_magic_string_id_t);
+typedef struct
+{
+  uint16_t magic_string_id; /**< name of the property */
+  uint8_t type; /**< type of the property */
+  uint8_t attributes; /**< attributes of the property */
+  uint16_t value; /**< value of the property */
+} ecma_builtin_property_descriptor_t;
 
 #define BUILTIN(builtin_id, \
                 object_type, \
@@ -70,43 +73,19 @@ ecma_builtin_bin_search_for_magic_string_id_in_array (const lit_magic_string_id_
                 is_extensible, \
                 is_static, \
                 lowercase_name) \
-extern ecma_completion_value_t \
+extern const ecma_builtin_property_descriptor_t \
+ecma_builtin_ ## lowercase_name ## _property_descriptor_list[]; \
+extern ecma_value_t \
 ecma_builtin_ ## lowercase_name ## _dispatch_call (const ecma_value_t *, \
                                                    ecma_length_t); \
-extern ecma_completion_value_t \
+extern ecma_value_t \
 ecma_builtin_ ## lowercase_name ## _dispatch_construct (const ecma_value_t *, \
                                                         ecma_length_t); \
-extern ecma_completion_value_t \
+extern ecma_value_t \
 ecma_builtin_ ## lowercase_name ## _dispatch_routine (uint16_t builtin_routine_id, \
                                                       ecma_value_t this_arg_value, \
                                                       const ecma_value_t [], \
-                                                      ecma_length_t); \
-extern ecma_property_t * \
-ecma_builtin_ ## lowercase_name ## _try_to_instantiate_property (ecma_object_t *, \
-                                                                 ecma_string_t *); \
-extern void \
-ecma_builtin_ ## lowercase_name ## _list_lazy_property_names (ecma_object_t *, \
-                                                              bool, \
-                                                              ecma_collection_header_t *, \
-                                                              ecma_collection_header_t *); \
-extern void \
-ecma_builtin_ ## lowercase_name ## _sort_property_names (void);
+                                                      ecma_length_t);
 #include "ecma-builtins.inc.h"
-
-
-#ifndef CONFIG_ECMA_COMPACT_PROFILE
-# define ECMA_BUILTIN_CP_UNIMPLEMENTED(...) \
-  JERRY_UNIMPLEMENTED_REF_UNUSED_VARS ("Built-in is not implemented.", __VA_ARGS__)
-#else /* !CONFIG_ECMA_COMPACT_PROFILE */
-# define ECMA_BUILTIN_CP_UNIMPLEMENTED(...) \
-{ \
-  if (false) \
-  { \
-    jerry_ref_unused_variables (0, __VA_ARGS__); \
-  } \
-  ecma_object_t *cp_error_p = ecma_builtin_get (ECMA_BUILTIN_ID_COMPACT_PROFILE_ERROR); \
-  return ecma_make_throw_obj_completion_value (cp_error_p); \
-}
-#endif /* CONFIG_ECMA_COMPACT_PROFILE */
 
 #endif /* !ECMA_BUILTINS_INTERNAL_H */

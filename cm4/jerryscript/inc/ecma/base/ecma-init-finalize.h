@@ -1,4 +1,4 @@
-/* Copyright 2014-2015 Samsung Electronics Co., Ltd.
+/* Copyright 2014-2016 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,8 @@
 
 /** \addtogroup ecma ECMA
  * @{
- */
-
-/**
- * \addtogroup ecmainitfinalize Initialization and finalization of ECMA
+ *
+ * \addtogroup ecmainitfinalize Initialization and finalization of ECMA components
  * @{
  */
 
@@ -33,4 +31,4 @@ extern void ecma_finalize (void);
  * @}
  */
 
-#endif /* ECMA_INIT_FINALIZE_H */
+#endif /* !ECMA_INIT_FINALIZE_H */

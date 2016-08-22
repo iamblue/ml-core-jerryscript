@@ -1,4 +1,4 @@
-/* Copyright 2015 Samsung Electronics Co., Ltd.
+/* Copyright 2015-2016 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,9 +41,6 @@ typedef enum
  */
 typedef uint32_t lit_magic_string_ex_id_t;
 
-extern void lit_magic_strings_init (void);
-extern void lit_magic_strings_ex_init (void);
-
 extern uint32_t lit_get_magic_string_ex_count (void);
 
 extern const lit_utf8_byte_t *lit_get_magic_string_utf8 (lit_magic_string_id_t);
@@ -63,6 +60,6 @@ extern bool lit_compare_utf8_string_and_magic_string (const lit_utf8_byte_t *, l
 extern bool lit_compare_utf8_string_and_magic_string_ex (const lit_utf8_byte_t *, lit_utf8_size_t,
                                                          lit_magic_string_ex_id_t);
 
-extern lit_utf8_byte_t *lit_copy_magic_string_to_buffer (lit_magic_string_id_t, lit_utf8_byte_t *, ssize_t);
+extern lit_utf8_byte_t *lit_copy_magic_string_to_buffer (lit_magic_string_id_t, lit_utf8_byte_t *, lit_utf8_size_t);
 
-#endif /* LIT_MAGIC_STRINGS_H */
+#endif /* !LIT_MAGIC_STRINGS_H */

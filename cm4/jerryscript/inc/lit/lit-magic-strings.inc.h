@@ -1,4 +1,5 @@
-/* Copyright 2014-2015 Samsung Electronics Co., Ltd.
+/* Copyright 2014-2016 Samsung Electronics Co., Ltd.
+ * Copyright 2016 University of Szeged.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +16,10 @@
 
 /*
  * List of ECMA magic strings
+ *
+ * These strings must be ascii strings. If non-ascii strings
+ * will be ever needed, a divider will be added to separate
+ * ascii and non-ascii groups.
  */
 LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_ARGUMENTS, "arguments")
 LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_EVAL, "eval")
@@ -41,6 +46,7 @@ LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_INPUT, "input")
 LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_LASTINDEX_UL, "lastIndex")
 LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_NAN, "NaN")
 LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_INFINITY_UL, "Infinity")
+LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_NEGATIVE_INFINITY_UL, "-Infinity")
 LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_UNDEFINED_UL, "Undefined")
 LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_NULL_UL, "Null")
 LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_OBJECT_UL, "Object")
@@ -212,7 +218,6 @@ LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_MAX_VALUE_U, "MAX_VALUE")
 LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_MIN_VALUE_U, "MIN_VALUE")
 LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_POSITIVE_INFINITY_U, "POSITIVE_INFINITY")
 LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_NEGATIVE_INFINITY_U, "NEGATIVE_INFINITY")
-LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_COMPACT_PROFILE_ERROR_UL, "CompactProfileError")
 LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_INVALID_DATE_UL, "Invalid Date")
 LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_APPLY, "apply")
 LIT_MAGIC_STRING_DEF (LIT_MAGIC_STRING_CALL, "call")

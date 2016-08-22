@@ -1,4 +1,4 @@
-/* Copyright 2014-2015 Samsung Electronics Co., Ltd.
+/* Copyright 2014-2016 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,17 @@
 #include "ecma-globals.h"
 #include "ecma-helpers.h"
 
-extern ecma_object_t *
-ecma_op_create_arguments_object (ecma_object_t *, ecma_object_t *,
-                                 ecma_collection_header_t *, ecma_collection_header_t *, bool);
+extern void
+ecma_op_create_arguments_object (ecma_object_t *, ecma_object_t *, const ecma_value_t *,
+                                 ecma_length_t, const ecma_compiled_code_t *);
 
-extern ecma_completion_value_t
+extern ecma_value_t
 ecma_op_arguments_object_get (ecma_object_t *, ecma_string_t *);
 extern ecma_property_t *
 ecma_op_arguments_object_get_own_property (ecma_object_t *, ecma_string_t *);
-extern ecma_completion_value_t
+extern ecma_value_t
 ecma_op_arguments_object_delete (ecma_object_t *, ecma_string_t *, bool);
-extern ecma_completion_value_t
+extern ecma_value_t
 ecma_op_arguments_object_define_own_property (ecma_object_t *, ecma_string_t *,
                                               const ecma_property_descriptor_t *, bool);
 

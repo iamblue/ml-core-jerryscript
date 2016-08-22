@@ -1,5 +1,5 @@
-/* Copyright 2015 Samsung Electronics Co., Ltd.
- * Copyright 2015 University of Szeged.
+/* Copyright 2015-2016 Samsung Electronics Co., Ltd.
+ * Copyright 2015-2016 University of Szeged.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@
 #endif /* !OBJECT_ID */
 
 #ifndef OBJECT_VALUE
-# define OBJECT_VALUE(name, obj_getter, prop_writable, prop_enumerable, prop_configurable)
+# define OBJECT_VALUE(name, obj_builtin_id, prop_attributes)
 #endif /* !OBJECT_VALUE */
 
 #ifndef ROUTINE
@@ -34,10 +34,8 @@
 OBJECT_ID (ECMA_BUILTIN_ID_DATE_PROTOTYPE)
 
 OBJECT_VALUE (LIT_MAGIC_STRING_CONSTRUCTOR,
-              ecma_builtin_get (ECMA_BUILTIN_ID_DATE),
-              ECMA_PROPERTY_WRITABLE,
-              ECMA_PROPERTY_NOT_ENUMERABLE,
-              ECMA_PROPERTY_CONFIGURABLE)
+              ECMA_BUILTIN_ID_DATE,
+              ECMA_PROPERTY_CONFIGURABLE_WRITABLE)
 
 ROUTINE (LIT_MAGIC_STRING_TO_STRING_UL, ecma_builtin_date_prototype_to_string, 0, 0)
 ROUTINE (LIT_MAGIC_STRING_TO_DATE_STRING_UL, ecma_builtin_date_prototype_to_date_string, 0, 0)
@@ -83,18 +81,17 @@ ROUTINE (LIT_MAGIC_STRING_TO_UTC_STRING_UL, ecma_builtin_date_prototype_to_utc_s
 ROUTINE (LIT_MAGIC_STRING_TO_ISO_STRING_UL, ecma_builtin_date_prototype_to_iso_string, 0, 0)
 ROUTINE (LIT_MAGIC_STRING_TO_JSON_UL, ecma_builtin_date_prototype_to_json, 1, 1)
 
-#ifndef CONFIG_ECMA_COMPACT_PROFILE_DISABLE_ANNEXB_BUILTIN
+#ifndef CONFIG_DISABLE_ANNEXB_BUILTIN
 
 ROUTINE (LIT_MAGIC_STRING_GET_YEAR_UL, ecma_builtin_date_prototype_get_year, 0, 0)
 ROUTINE (LIT_MAGIC_STRING_SET_YEAR_UL, ecma_builtin_date_prototype_set_year, 1, 1)
 ROUTINE (LIT_MAGIC_STRING_TO_GMT_STRING_UL, ecma_builtin_date_prototype_to_utc_string, 0, 0)
 
-#endif /* CONFIG_ECMA_COMPACT_PROFILE_DISABLE_ANNEXB_BUILTIN */
+#endif /* !CONFIG_DISABLE_ANNEXB_BUILTIN */
 
 #undef OBJECT_ID
 #undef SIMPLE_VALUE
 #undef NUMBER_VALUE
 #undef STRING_VALUE
 #undef OBJECT_VALUE
-#undef CP_UNIMPLEMENTED_VALUE
 #undef ROUTINE

@@ -1,4 +1,5 @@
-/* Copyright 2015 Samsung Electronics Co., Ltd.
+/* Copyright 2015-2016 Samsung Electronics Co., Ltd.
+ * Copyright 2016 University of Szeged.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +18,6 @@
 #define LIT_GLOBALS_H
 
 #include "jrt.h"
-#include "rcs-cpointer.h"
 
 /**
  * ECMAScript standard defines terms "code unit" and "character" as 16-bit unsigned value
@@ -115,6 +115,11 @@ typedef uint8_t lit_utf8_byte_t;
 typedef uint32_t lit_utf8_size_t;
 
 /**
+ * Size of a magic string in bytes
+ */
+typedef uint8_t lit_magic_size_t;
+
+/**
  * Unicode code point
  */
 typedef uint32_t lit_code_point_t;
@@ -122,31 +127,21 @@ typedef uint32_t lit_code_point_t;
 /**
  * ECMA string hash
  */
-typedef uint8_t lit_string_hash_t;
+typedef uint16_t lit_string_hash_t;
 
 /**
- * Literal type
+ * Maximum value of ECMA string hash + 1
+ *
+ * Note:
+ *   On ARM, this constant can be encoded as an immediate value
+ *   while 0xffffu cannot be. Hence using this constant reduces
+ *   binary size and improves performance.
  */
-typedef rcs_record_t *lit_literal_t;
+#define LIT_STRING_HASH_LIMIT 0x10000u
 
 /**
- * Compressed pointer type
+ * Hash of the frequently used "length" string.
  */
-typedef rcs_cpointer_t lit_cpointer_t;
+#define LIT_STRING_LENGTH_HASH 0x3615u
 
-/**
- * Invalid literal
- */
-#define NOT_A_LITERAL (rcs_cpointer_null_cp ())
-
-/**
- * ECMA string hash value length, in bits
- */
-#define LIT_STRING_HASH_BITS (sizeof (lit_string_hash_t) * JERRY_BITSINBYTE)
-
-/**
- * Number of string's last characters to use for hash calculation
- */
-#define LIT_STRING_HASH_LAST_BYTES_COUNT (2)
-
-#endif /* LIT_GLOBALS_H */
+#endif /* !LIT_GLOBALS_H */

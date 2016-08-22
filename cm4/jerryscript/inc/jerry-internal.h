@@ -1,4 +1,4 @@
-/* Copyright 2015 Samsung Electronics Co., Ltd.
+/* Copyright 2015-2016 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 
 #ifndef JERRY_INTERNAL
  # error "The header is for Jerry's internal interfaces"
-#endif
+#endif /* !JERRY_INTERNAL */
 
 #ifndef JERRY_INTERNAL_H
 #define JERRY_INTERNAL_H
@@ -23,30 +23,14 @@
 #include "ecma-globals.h"
 #include "jerry-api.h"
 
-extern ecma_completion_value_t
-jerry_dispatch_external_function (ecma_object_t *, ecma_external_pointer_t, ecma_value_t, ecma_collection_header_t *);
+extern ecma_value_t
+jerry_dispatch_external_function (ecma_object_t *,
+                                  ecma_external_pointer_t,
+                                  ecma_value_t,
+                                  const ecma_value_t *,
+                                  ecma_length_t);
 
 extern void
 jerry_dispatch_object_free_callback (ecma_external_pointer_t, ecma_external_pointer_t);
-
-extern bool
-jerry_is_abort_on_fail (void);
-
-/**
- * Snapshot header
- */
-typedef struct
-{
-  uint32_t lit_table_size; /**< size of literal table */
-  uint32_t scopes_num; /**< number of saved bytecode pieces in the snapshot */
-  uint32_t is_run_global : 1; /**< flag, indicating whether the snapshot
-                               *   was dumped as 'Global scope'-mode code (true)
-                               *   or as eval-mode code (false) */
-} jerry_snapshot_header_t;
-
-/**
- * Jerry snapshot format version
- */
-#define JERRY_SNAPSHOT_VERSION (2u)
 
 #endif /* !JERRY_INTERNAL_H */

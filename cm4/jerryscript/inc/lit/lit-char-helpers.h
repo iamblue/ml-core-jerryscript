@@ -1,4 +1,5 @@
-/* Copyright 2015 Samsung Electronics Co., Ltd.
+/* Copyright 2015-2016 Samsung Electronics Co., Ltd.
+ * Copyright 2016 University of Szeged.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +18,8 @@
 #define LIT_CHAR_HELPERS_H
 
 #include "lit-globals.h"
+
+#define LIT_CHAR_UNDEF ((ecma_char_t) 0xFFFF) /* undefined character */
 
 /*
  * Format control characters (ECMA-262 v5, Table 1)
@@ -37,7 +40,6 @@ extern bool lit_char_is_format_control (ecma_char_t);
 #define LIT_CHAR_NBSP ((ecma_char_t) 0x00A0) /* no-break space */
 /* LIT_CHAR_BOM is defined above */
 
-extern bool lit_char_is_space_separator (ecma_char_t);
 extern bool lit_char_is_white_space (ecma_char_t);
 
 /*
@@ -76,10 +78,10 @@ extern bool lit_char_is_line_terminator (ecma_char_t);
 #define LIT_CHAR_UNDERSCORE  ((ecma_char_t) '_')  /* low line (underscore) */
 /* LIT_CHAR_BACKSLASH defined above */
 
-extern bool lit_char_is_unicode_letter (ecma_char_t);
-extern bool lit_char_is_unicode_combining_mark (ecma_char_t);
-extern bool lit_char_is_unicode_digit (ecma_char_t);
-extern bool lit_char_is_unicode_connector_punctuation (ecma_char_t);
+extern bool lit_char_is_identifier_start (const uint8_t *);
+extern bool lit_char_is_identifier_part (const uint8_t *);
+extern bool lit_char_is_identifier_start_character (ecma_char_t);
+extern bool lit_char_is_identifier_part_character (ecma_char_t);
 
 /*
  * Punctuator characters (ECMA-262 v5, 7.7)
@@ -210,13 +212,17 @@ extern bool lit_char_is_unicode_connector_punctuation (ecma_char_t);
 #define LIT_CHAR_ASCII_DIGITS_BEGIN                 LIT_CHAR_0           /* decimal digits range */
 #define LIT_CHAR_ASCII_DIGITS_END                   LIT_CHAR_9
 
+#define LEXER_TO_ASCII_LOWERCASE(character) ((character) | LIT_CHAR_SP)
+
 extern bool lit_char_is_octal_digit (ecma_char_t);
 extern bool lit_char_is_decimal_digit (ecma_char_t);
 extern bool lit_char_is_hex_digit (ecma_char_t);
 extern uint32_t lit_char_hex_to_int (ecma_char_t);
+extern size_t lit_char_to_utf8_bytes (uint8_t *, ecma_char_t);
+extern size_t lit_char_get_utf8_length (ecma_char_t);
 
 /* read a hex encoded code point from a zero terminated buffer */
-bool lit_read_code_point_from_hex (lit_utf8_byte_t *, lit_utf8_size_t, lit_code_point_t *);
+bool lit_read_code_unit_from_hex (const lit_utf8_byte_t *, lit_utf8_size_t, ecma_char_ptr_t);
 
 /**
  * Null character
@@ -237,7 +243,7 @@ extern bool lit_char_is_word_char (ecma_char_t);
  */
 #define LIT_MAXIMUM_OTHER_CASE_LENGTH (3)
 
-lit_utf8_size_t lit_char_to_lower_case (ecma_char_t, ecma_char_t *, size_t);
-lit_utf8_size_t lit_char_to_upper_case (ecma_char_t, ecma_char_t *, size_t);
+ecma_length_t lit_char_to_lower_case (ecma_char_t, ecma_char_t *, ecma_length_t);
+ecma_length_t lit_char_to_upper_case (ecma_char_t, ecma_char_t *, ecma_length_t);
 
-#endif /* LIT_CHAR_HELPERS_H */
+#endif /* !LIT_CHAR_HELPERS_H */

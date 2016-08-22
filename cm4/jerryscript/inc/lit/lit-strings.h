@@ -1,4 +1,5 @@
-/* Copyright 2015 Samsung Electronics Co., Ltd.
+/* Copyright 2015-2016 Samsung Electronics Co., Ltd.
+ * Copyright 2016 University of Szeged.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef LIT_UNICODE_HELPERS_H
-#define LIT_UNICODE_HELPERS_H
+#ifndef LIT_STRINGS_H
+#define LIT_STRINGS_H
 
 #include "jrt.h"
 #include "lit-globals.h"
@@ -80,46 +81,9 @@
 #define LIT_UTF8_CESU8_SURROGATE_SIZE_DIF (2 * LIT_UTF8_MAX_BYTES_IN_CODE_UNIT - LIT_UTF8_MAX_BYTES_IN_CODE_POINT)
 
 /**
- * Width of the offset field in lit_utf8_iterator_pos_t structure
- */
-#define LIT_ITERATOR_OFFSET_WIDTH (31)
-
-/**
- * Iterator's offset field mask
- */
-#define LIT_ITERATOR_OFFSET_MASK ((1ull << LIT_ITERATOR_OFFSET_WIDTH) - 1)
-
-/**
  * Byte values >= LIT_UTF8_FIRST_BYTE_MAX are not allowed in internal strings
  */
 #define LIT_UTF8_FIRST_BYTE_MAX LIT_UTF8_5_BYTE_MARKER
-
-/**
- * Represents position of the iterator
- */
-typedef struct
-{
-  lit_utf8_size_t offset : LIT_ITERATOR_OFFSET_WIDTH; /** offset to utf-8 char */
-  bool is_non_bmp_middle: 1; /** flag indicating that current position of the iterator is the middle of
-                              *  4-byte char */
-} lit_utf8_iterator_pos_t;
-
-/**
- * Value of an iterator, positioned to beginning of a string
- */
-#define LIT_ITERATOR_POS_ZERO {0, false}
-
-/**
- * Represents an iterator over utf-8 buffer
- */
-typedef struct
-{
-  const lit_utf8_byte_t *buf_p; /* buffer */
-  lit_utf8_size_t buf_size; /* buffer length */
-  lit_utf8_iterator_pos_t buf_pos; /* position in the buffer */
-} lit_utf8_iterator_t;
-
-int32_t lit_utf8_iterator_pos_cmp (lit_utf8_iterator_pos_t, lit_utf8_iterator_pos_t);
 
 /* validation */
 bool lit_is_utf8_string_valid (const lit_utf8_byte_t *, lit_utf8_size_t);
@@ -128,23 +92,6 @@ bool lit_is_cesu8_string_valid (const lit_utf8_byte_t *, lit_utf8_size_t);
 /* checks */
 bool lit_is_code_point_utf16_low_surrogate (lit_code_point_t);
 bool lit_is_code_point_utf16_high_surrogate (lit_code_point_t);
-
-/* iteration */
-lit_utf8_iterator_t lit_utf8_iterator_create (const lit_utf8_byte_t *, lit_utf8_size_t);
-
-void lit_utf8_iterator_seek_bos (lit_utf8_iterator_t *);
-
-lit_utf8_iterator_pos_t lit_utf8_iterator_get_pos (const lit_utf8_iterator_t *);
-void lit_utf8_iterator_seek (lit_utf8_iterator_t *, lit_utf8_iterator_pos_t);
-
-ecma_char_t lit_utf8_iterator_peek_next (const lit_utf8_iterator_t *);
-
-void lit_utf8_iterator_incr (lit_utf8_iterator_t *);
-void lit_utf8_iterator_advance (lit_utf8_iterator_t *, ecma_length_t);
-
-ecma_char_t lit_utf8_iterator_read_next (lit_utf8_iterator_t *);
-
-bool lit_utf8_iterator_is_eos (const lit_utf8_iterator_t *);
 
 /* size */
 lit_utf8_size_t lit_zt_utf8_string_size (const lit_utf8_byte_t *);
@@ -181,14 +128,11 @@ lit_utf8_size_t lit_read_code_unit_from_utf8 (const lit_utf8_byte_t *,
 lit_utf8_size_t lit_read_prev_code_unit_from_utf8 (const lit_utf8_byte_t *,
                                                    ecma_char_t *);
 
-ecma_char_t lit_utf8_read_next (lit_utf8_byte_t **);
-ecma_char_t lit_utf8_read_prev (lit_utf8_byte_t **);
-ecma_char_t lit_utf8_peek_next (lit_utf8_byte_t *);
-ecma_char_t lit_utf8_peek_prev (lit_utf8_byte_t *);
-void lit_utf8_incr (lit_utf8_byte_t **);
-void lit_utf8_decr (lit_utf8_byte_t **);
+ecma_char_t lit_utf8_read_next (const lit_utf8_byte_t **);
+ecma_char_t lit_utf8_read_prev (const lit_utf8_byte_t **);
+ecma_char_t lit_utf8_peek_next (const lit_utf8_byte_t *);
+ecma_char_t lit_utf8_peek_prev (const lit_utf8_byte_t *);
+void lit_utf8_incr (const lit_utf8_byte_t **);
+void lit_utf8_decr (const lit_utf8_byte_t **);
 
-/* print */
-void lit_put_ecma_char (ecma_char_t);
-
-#endif /* LIT_UNICODE_HELPERS_H */
+#endif /* !LIT_STRINGS_H */
